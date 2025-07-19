@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Audio</title>
+  <style>
+    /* -------- page background -------- */
+    body {
+      background: url('https://cdn.pixabay.com/photo/2022/10/02/10/55/sunflower-7493240_1280.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* -------- card container -------- */
+    .container {
+      background: rgba(255,255,255,0.92);
+      padding: 2.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      min-width: 340px;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2d3a4b;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    input[type="file"] {
+      padding: 0.5rem;
+      border: 1px solid #d1d9e6;
+      border-radius: 6px;
+      background: #f3f6fa;
+      font-size: 1rem;
+    }
+
+    button[type="submit"] {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    button[type="submit"]:hover { background: #2563eb; }
+
+    /* -------- Django form errors -------- */
+    .errorlist {
+      color: #e53e3e;
+      margin: 0 0 0.5rem 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.98rem;
+    }
+
+    /* -------- loading overlay + spinner -------- */
+    #loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden;      /* hidden until form submit */
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #93c5fd;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <!-- loading animation overlay -->
+  <div id="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container">
+    <h1>Upload Audio File</h1>
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Transcribe</button>
+    </form>
+  </div>
+
+  <script>
+    /* show spinner when user submits the form */
+    document.getElementById('uploadForm').addEventListener('submit', () => {
+      document.getElementById('loader-overlay').style.visibility = 'visible';
+    });
+  </script>
+</body>
+</html>
